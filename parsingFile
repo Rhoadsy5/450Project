@@ -1,8 +1,24 @@
 #!/bin/bash
 
 input="names.txt"
-while IFS= read -r line
+while IFS= read -r currentLine
 do
-   echo "$line"
-   echo "Hello World"
+   # Keep track of the index so we can know which part of the line we're on.
+   index=0;
+   for word in $currentLine
+   # Use a 'for' loop to iterate through every line individually
+   do
+	if [[ $index != 0 ]]
+	# Skip over the first couple letters (index 0) becayse we never have to use them.
+	then
+	    echo "$word"
+	    if [[ $word =~ [A-Z]{2,4} ]]
+	    # This is a regex expression. It checks to find the all-caps abbreviation for the person's major. (e.g. COM or MBA.) if we find it, then we know we're at the end of the line.
+	    then
+		echo "We're at the end of the line!"
+	    fi
+	fi
+	((index++))
+   done  
+ 
 done < "names.txt"
