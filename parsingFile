@@ -1,6 +1,7 @@
 #!/bin/bash
 
 input="names.txt"
+declare -a userNameArr
 while IFS= read -r currentLine
 do
    # Keep track of the index so we can know which part of the line we're on.
@@ -11,7 +12,22 @@ do
 	if [[ $index != 0 ]]
 	# Skip over the first couple letters (index 0) becayse we never have to use them.
 	then
-	    echo "$word"
+	    if [[ $index == 1 ]]
+	    # This is the index of the last name.
+	    then
+		lastName=$word
+	    elif [[ $index == 2 ]]
+	    # This is the index of the first name.
+	    then
+		# Takes the first char of the firstname
+		firstNameChar=${word::1}
+	    elif [[ $index == 3 ]]
+	    # This is the index of the middle initial
+	    then
+		# Takest the first char of the middlename
+		middleNameChar=${word::1}
+	    fi
+
 	    if [[ $word =~ [A-Z]{2,4} ]]
 	    # This is a regex expression. It checks to find the all-caps abbreviation for the person's major. (e.g. COM or MBA.) if we find it, then we know we're at the end of the line.
 	    then
@@ -20,5 +36,22 @@ do
 	fi
 	((index++))
    done  
- 
+
+   # concatenate the string together to create the username
+   username="$firstNameChar$middleNameChar$lastName"
+   echo $username
+   # TODO: check to see if the array contains the username
+   # for name in #FIGURE OUT HOW TO GO THROUGH ARRAY; do
+	# TODO: never gets into here
+   #	if [[ $username == name ]]
+   #	then
+	    # if the value is in the array, print username
+	    # probably should print full name and line number
+   #	    echo $username
+   #	else
+	    # if it doesn't exist, add it to the array
+   #	    userNameArr+=($username)
+   #	fi
+   #done
 done < "names.txt"
+
