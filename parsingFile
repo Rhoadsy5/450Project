@@ -18,7 +18,8 @@ do
 	    if [[ $index == 1 ]]
 	    # This is the index of the last name.
 	    then
-		lastName=$word
+		# strips all the non-alphabetic chars from the lastname
+		lastName="${word//[^[:alpha:]]/}"
 	    fi	    
 
 	    if ! [[ $word =~ [A-Z]{2,4} ]]
