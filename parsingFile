@@ -2,11 +2,13 @@
 
 input="names.txt"
 declare -a userNameArr
+
 while IFS= read -r currentLine
 do
    lastname=""
    firstNameChar=""
    middleNameChar=""
+   numberTwo="2"
    # Keep track of the index so we can know which part of the line we're on.
    index=0;
    for word in $currentLine
@@ -46,14 +48,21 @@ do
    # Concatenate the string together to create the username & make it lowercase
    username="$firstNameChar$middleNameChar$lastName"
    username=$(echo $username | tr [:upper:] [:lower:])
-   # echo $username
+    #echo $username
 
    # Check to see if there is a duplicate username
-   if [[ ${userNameArr[@]} =~ $username ]]
-   then
-      echo "$username IS A DUPLICATE!"
-      # Do something to resolve the conflict
-   fi
+   while [[ ${userNameArr[@]} =~ ${username} ]]
+   do
+	lastCharInUser=${username: -1}
+	if ! [[ $lastCharInUser =~ ^[0-9]+$ ]]
+	then
+	    username="$username$numberTwo"
+	else
+	    lastCharInUser=$(($lastCharInUser + 1))
+	    username="${username%?}$lastCharInUser"
+	fi
+   done
+   echo $username
    userNameArr+=($username)
 done < "names.txt"
 # echo "AND NOW, HERE IS THE ARRAY!"
