@@ -1,8 +1,18 @@
 #!/bin/bash
 
-input="names.txt"
-declare -a userNameArr
+# A script for creating new user accounts from a properly formatted text input of names.
+# Created by Ethan Whitted (ewhitted17@georgefox.edu) and Ashley Rhoads (arhoads18@georgefox.edu)
+# Last modified 22-2-2021
 
+# To change where the script is pulling names from, change this 'input' variable.
+# To change where the script writes the resulting list of usernames, change the 'output' variable.
+declare -r input="names.txt"
+declare -r output="usernames.txt"
+declare -a userNameArr
+userCount=0
+
+# Read through each line of the text file containing the names and save each as a tab-delimited 
+# array.
 while IFS=$'\t' read -r -a currentLine
 do
 
@@ -11,6 +21,9 @@ do
    middleNameChar=""
    lengthOfCurrentLine=${#currentLine[@]}
 
+   # We know that our array of words from each line will have at least the user's major, their
+   # program title, and a name, resulting in a length of 3 for the array. For every item after
+   # that, save it as a first name and a middle name.
    if [[ $lengthOfCurrentLine -ge 3 ]]
    then
 	lastName=${currentLine[1]}
@@ -30,14 +43,13 @@ do
         flag=true
    fi
    
-   # Concatenate the string together to create the username & make it lowercase
+   # Concatenate the string of names together to create the username & make it lowercase
    if [[ flag != true ]]
    then
-	echo $lastName
 	username="$firstNameChar$middleNameChar$lastName"
    	username=$(echo $username | tr [:upper:] [:lower:])
 
-        # Check to see if there is a duplicate username
+        # Check to see if there is a duplicate username. Append a number if there is.
    	while [[ " ${userNameArr[@]} " =~ " ${username} " ]]
    	do
 	    lastCharInUser=${username: -1}
@@ -50,11 +62,15 @@ do
 	    fi
   	done
 
+	# Create the account with the specified username and echo the result.
+   	useradd -m -p $lastName $username
    	userNameArr+=($username)
-  	echo $username >> usernames.txt
-   	#useradd $username
+  	echo $username >> $output
+	((userCount++))
+	echo "Adding user #$userCount"
     fi
 done < "names.txt"
+echo $"Success. $userCount user(s) added"
+# For testing purposes, the following lines may be uncommented to view the array of names.
 # echo "AND NOW, HERE IS THE ARRAY!"
 # echo ${userNameArr[*]}
-

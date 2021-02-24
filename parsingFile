@@ -1,3 +1,6 @@
+# This is a deprecated & unfinished version of our script to add user accounts from a text input.
+# It has been superceeded by the 'addinUsers' file.
+
 #!/bin/bash
 
 input="names.txt"

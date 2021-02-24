@@ -1,7 +1,16 @@
-!#/bin/bash
+#!/bin/bash
 
-input="usernames.txt"
+# A script for removing user accounts from a properly-formatted text file containing a list of
+# usernames.
+# Created by Ethan Whitted (ewhitted17@georgefox.edu and Ashley Rhoads (arhoads18@georgefox.edu)
+# Last modified 22-2-2021
+
+# To change the list of usernames that this script is pulling from, change the 'input' variable.
+declare -r input="usernames.txt"
+
+# Iterate through the users in the file containing the usernames and remove the account of each
+# listed username.
 while IFS= read -r username 
 do
     userdel -r $username
-done < "usernames.txt"  
+done < $input  
