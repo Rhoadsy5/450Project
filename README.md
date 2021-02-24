@@ -52,6 +52,8 @@ To avoid warnings about missing mail spools when the 'removingUsers' script is r
 the system's `MAIL_DIR` directory is properly set in '/etc/login.defs' and that
 `CREATE_MAIL_SPOOL=yes` is set in '/etc/default/useradd'.
 
+On line 1202 of the names.txt provided by Dr. Wilson, we added an extra newline character between "MB" and "Derek" for what appears to be a typo.
+
 ---
 For any questions, please contact the authors Ethan Whitted or Ashley Rhoads at 
 ewhitted17@georgefox.edu, or arhoads18@georgefox.edu, respectively.
